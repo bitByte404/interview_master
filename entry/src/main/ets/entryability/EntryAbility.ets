@@ -1,12 +1,14 @@
 import { AbilityConstant, ConfigurationConstant, UIAbility, Want } from '@kit.AbilityKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
-import { logger } from '../commons/utils';
+import { fullScreen, logger } from '../commons/utils';
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     this.context.getApplicationContext().setColorMode(ConfigurationConstant.ColorMode.COLOR_MODE_NOT_SET);
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
+    // 将上下文对象存储起来
+    AppStorage.setOrCreate('context', this.context)
   }
 
   onDestroy(): void {
@@ -25,6 +27,11 @@ export default class EntryAbility extends UIAbility {
       }
       // hilog.info(0x0000, 'testTag', 'Succeeded in loading the content.');
       logger.info('Succeeded in loading the content.');
+      // 测试全屏效果
+      fullScreen.enable()
+      // setTimeout(() => {
+      //   fullScreen.disable()
+      // }, 5000)
     });
   }
 
