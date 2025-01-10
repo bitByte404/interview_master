@@ -1,3 +1,4 @@
+import { QuestionListComp } from "../../commons/component"
 import { QuestionType } from "../../models"
 
 @Component
@@ -43,11 +44,7 @@ export struct HomeCategory {
     Tabs() {
       ForEach(this.questionList, (item: QuestionType, index) => {
         TabContent() {
-          Row() {
-            Column() {
-
-            }
-          }
+          QuestionListComp()
         }
         .tabBar(this.TabBarBuilder(item, index))
       })

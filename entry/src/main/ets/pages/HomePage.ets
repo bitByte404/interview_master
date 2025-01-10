@@ -35,11 +35,14 @@ export struct HomePage {
       )
 
       // 分类
-      HomeCategory()
+      Column() {
+        HomeCategory()
+      }
+      .layoutWeight(1)
     }
     .width('100%')
     .height('100%')
-    .backgroundColor($r('app.color.common_gray_bg'))
+    .backgroundColor($r('app.color.white'))
   }
 
   @Builder
@@ -48,6 +51,9 @@ export struct HomePage {
       Image(item)
         .width('100%')
     }
+    .constraintSize({
+      minHeight: 140
+    })
     .width('100%')
     .padding({ left: 16, right: 16 })
   }
