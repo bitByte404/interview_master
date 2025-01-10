@@ -1,5 +1,7 @@
 import { QuestionItemComp } from "."
-import { QuestionItem } from "../../models"
+import { PageData, QuestionItem, QuestionListParams, SortType } from "../../models"
+import { http } from "../utils"
+import { promptAction } from "@kit.ArkUI"
 
 @Component
 export struct QuestionListComp {
@@ -10,17 +12,26 @@ export struct QuestionListComp {
   @State isLoading: boolean = false
   // 列表数据
   @State list: QuestionItem[] = []
+  // 试题分类id
+  @Prop typeId: number
+  // 试题列表排序规则
+  @Prop sort: SortType = SortType.Default
+  @State page: number = 1
 
   // onRefreshing =>  模拟1后更新状态 完成
-  onRefresh() {
-    setTimeout(() => {
-      this.list = []
-      for (let i = 0; i < 10; i++) {
-        this.list.push({} as QuestionItem)
-      }
-      this.isRefreshing = false
-      this.isFinished =  false
-    }, 1000)
+  async onRefresh() {
+    this.page = 1 // 重置页码
+    const res = await this.getQuestionList()
+    this.list = res.rows
+    this.isLoading = false
+    if (this.page >= res.pageTotal) {
+      this.isFinished = true
+    } else {
+      this.isFinished = false
+      this.page++
+    }
+    this.isRefreshing = false
+    promptAction.showToast({ message: `数据更新成功` })
   }
 
   @Builder
@@ -51,21 +62,11 @@ export struct QuestionListComp {
   build() {
     Refresh({ refreshing: $$this.isRefreshing }) {
       List() {
-        ForEach(this.list, () => {
+        ForEach(this.list, (item: QuestionItem, index) => {
           ListItem() {
-            QuestionItemComp({
-              item: {
-                id: '1',
-                stem: '如何删除Record中的元素',
-                difficulty: 3,
-                likeCount: 100,
-                views: 65,
-                readFlag: 1
-              }
-            })
+            QuestionItemComp({ item })
           }
         })
-
         this.loadMoreBuilder()
       }
       .scrollBar(BarState.Off)
@@ -94,19 +95,28 @@ export struct QuestionListComp {
     })
   }
 
-  // 加载逻辑代码
-  onLoad() {
-    setTimeout(() => {
-      for (let i = 0; i < 10; i++) {
-        this.list.push({
+  // 加载试题列表
+  async onLoad() {
+    const res = await this.getQuestionList()
+    this.list.push(...res.rows)
+    this.isLoading = false
+    if (this.page >= res.pageTotal) {
+      this.isFinished = true
+    } else {
+      this.page++
+    }
+  }
 
-        } as QuestionItem)
-      }
-      this.isLoading = false
-      // 列表长度40， 终止加载
-      if (this.list.length >= 40) {
-        this.isFinished = true
-      }
-    }, 1000)
+  getQuestionList(): Promise<PageData<QuestionItem>> {
+    return http.request<PageData<QuestionItem>>({
+      url: '/question/list',
+      params: {
+        type: this.typeId,
+        sort: this.sort,
+        questionBankType: 10,
+        pageSize: 10, // 每页条数
+        page: this.page
+      } as QuestionListParams
+    })
   }
 }

@@ -47,7 +47,10 @@ export struct HomeCategory {
     Tabs() {
       ForEach(this.questionList, (item: QuestionType, index) => {
         TabContent() {
-          QuestionListComp()
+          // 试题列表
+          QuestionListComp({
+            typeId: item.id
+          })
         }
         .tabBar(this.TabBarBuilder(item, index))
       })
