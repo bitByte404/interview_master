@@ -1,19 +1,21 @@
 import { QuestionListComp } from "../../commons/component"
+import { http } from "../../commons/utils/Http"
 import { QuestionType } from "../../models"
 
 @Component
 export struct HomeCategory {
-  @State questionList: QuestionType[] = [
-    { id: 1, name: 'ArkTS', displayNewestFlag: 0 },
-    { id: 2, name: 'ArkUI', displayNewestFlag: 1 },
-    { id: 3, name: 'Hap', displayNewestFlag: 1 },
-    { id: 4, name: 'Hsp', displayNewestFlag: 0 },
-    { id: 5, name: 'Har', displayNewestFlag: 0 },
-    { id: 6, name: 'Ability', displayNewestFlag: 0 },
-    { id: 7, name: 'Stage', displayNewestFlag: 0 },
-    { id: 8, name: 'Kit', displayNewestFlag: 0 }
-  ]
+  @State questionList: QuestionType[] = []
   @State activeIndex: number = 0
+
+  aboutToAppear() {
+    this.getQuestionList()
+  }
+
+  async getQuestionList() {
+    this.questionList = await http.request<QuestionType[]>({
+      url: 'question/type',
+    })
+  }
 
   @Builder
   TabBarBuilder(item: QuestionType, index: number) {
@@ -27,8 +29,9 @@ export struct HomeCategory {
           .width(this.activeIndex == index ? 20 : 0)
           .height(2)
           .backgroundColor($r('app.color.black'))
-          .animation({ duration: this.activeIndex == index ? 300 : 0})
+          .animation({ duration: this.activeIndex == index ? 300 : 0 })
       }
+
       if (item.displayNewestFlag) {
         Image($r('app.media.ic_home_new'))
           .height(15)
