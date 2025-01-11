@@ -1,4 +1,4 @@
-import { QuestionListComp } from "../../commons/component"
+import { HcSkeleton, HcSkeletonItem, QuestionListComp } from "../../commons/component"
 import { http } from "../../commons/utils/Http"
 import { QuestionItem, QuestionType, SortType } from "../../models"
 
@@ -10,15 +10,18 @@ export struct HomeCategory {
   @State filterIndex: number = 0 // 高亮的下标
   @State filterSort: SortType = SortType.Default // 题目的高亮排序规则
   @State sort: SortType = SortType.Default
+  @State isLoading: boolean = false
 
   aboutToAppear() {
     this.getQuestionList()
   }
 
   async getQuestionList() {
+    this.isLoading = true
     this.questionList = await http.request<QuestionType[]>({
       url: 'question/type',
     })
+    this.isLoading = false
   }
 
   @Builder
@@ -111,6 +114,7 @@ export struct HomeCategory {
 
   @Builder
   TabBarBuilder(item: QuestionType, index: number) {
+    // 列表
     Row() {
       Stack({ alignContent: Alignment.Bottom }) {
         Text(item.name)
@@ -137,53 +141,89 @@ export struct HomeCategory {
     .padding({ left: 16, right: index == this.questionList.length - 1 ? 16 : 0 })
   }
 
+  @Builder
+  SkeletonBuilder() {
+    Column() {
+      HcSkeleton() {
+        Column() {
+          Row({ space: 10 }) {
+            HcSkeletonItem({ widthValue: '15%' })
+            HcSkeletonItem({ widthValue: '20%' })
+            HcSkeletonItem({ widthValue: '10%' })
+            HcSkeletonItem({ widthValue: '13%' })
+            HcSkeletonItem({ widthValue: '16%' })
+          }.width('100%')
+          .height(44)
+
+          ForEach(new Array(6).fill(0), () => {
+            Column({ space: 10 }) {
+              HcSkeletonItem({ widthValue: '70%' })
+              HcSkeletonItem({ widthValue: '75%' })
+            }
+            .width('100%')
+            .height(80)
+            .alignItems(HorizontalAlign.Start)
+            .justifyContent(FlexAlign.Center)
+          })
+        }
+        .padding({ left: 16, right: 16 })
+      }
+    }
+  }
+
   build() {
-    Stack({ alignContent: Alignment.TopEnd }) {
-      Tabs({ index: this.activeIndex }) {
-        ForEach(this.questionList, (item: QuestionType, index) => {
-          TabContent() {
-            // 试题列表
-            QuestionListComp({
-              typeId: item.id,
-              sort: this.sort
-            })
-          }
-          .tabBar(this.TabBarBuilder(item, index))
+    if ( this.isLoading) {
+      // 骨架屏组件
+      this.SkeletonBuilder()
+    } else {
+      Stack({ alignContent: Alignment.TopEnd }) {
+        Tabs({ index: this.activeIndex }) {
+          ForEach(this.questionList, (item: QuestionType, index) => {
+            TabContent() {
+              // 试题列表
+              QuestionListComp({
+                typeId: item.id,
+                sort: this.sort
+              })
+            }
+            .tabBar(this.TabBarBuilder(item, index))
+          })
+        }
+        .onChange((index) => {
+          this.activeIndex = index
+        })
+        .barHeight(44)
+        .divider({
+          strokeWidth: 1,
+          color: $r('app.color.common_gray_border')
+        })
+        .scrollable(false)
+        .barMode(BarMode.Scrollable)
+
+        Row() {
+          Image($r('app.media.ic_home_filter'))
+            .width(24)
+            .aspectRatio(1)
+        }
+        .backgroundColor($r('app.color.white'))
+        .linearGradient({
+          angle: 90,
+          colors: [['#00ffffff', 0], ['#ffffff', 0.285]]
+        })
+        .width(56)
+        .height(44)
+        .justifyContent(FlexAlign.Center)
+        .bindSheet($$this.isShow, this.FilterSheetBuilder(), {
+          height: 400,
+          showClose: false
+        })
+        .onClick(() => {
+          this.isShow = true
+          // 同步tab的激活状态
+          this.filterIndex = this.activeIndex
         })
       }
-      .onChange((index) => {
-        this.activeIndex = index
-      })
-      .barHeight(44)
-      .divider({
-        strokeWidth: 1,
-        color: $r('app.color.common_gray_border')
-      })
-      .scrollable(false)
-      .barMode(BarMode.Scrollable)
 
-      Row() {
-        Image($r('app.media.ic_home_filter'))
-          .width(24)
-          .aspectRatio(1)
-      }
-      .backgroundColor($r('app.color.white'))
-      .linearGradient({
-        angle: 90,
-        colors: [['#00ffffff', 0], ['#ffffff', 0.285]]
-      })
-      .width(56)
-      .height(44)
-      .justifyContent(FlexAlign.Center)
-      .bindSheet($$this.isShow, this.FilterSheetBuilder(), {
-        height: 400,
-        showClose: false
-      })
-      .onClick(() => {
-        this.isShow = true
-        // 同步tab的激活状态
-        this.filterIndex = this.activeIndex
-      })
     }
   }
 }
