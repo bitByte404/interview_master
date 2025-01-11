@@ -1,7 +1,6 @@
 import { QuestionItemComp } from "."
 import { PageData, QuestionItem, QuestionListParams, SortType } from "../../models"
 import { http } from "../utils"
-import { promptAction } from "@kit.ArkUI"
 
 @Component
 export struct QuestionListComp {
@@ -15,8 +14,14 @@ export struct QuestionListComp {
   // 试题分类id
   @Prop typeId: number
   // 试题列表排序规则
-  @Prop sort: SortType = SortType.Default
+  @Prop
+  @Watch('changeSort')
+  sort: SortType = SortType.Default
   @State page: number = 1
+
+  changeSort() {
+    this.isRefreshing = true
+  }
 
   // onRefreshing =>  模拟1后更新状态 完成
   async onRefresh() {
@@ -31,7 +36,6 @@ export struct QuestionListComp {
       this.page++
     }
     this.isRefreshing = false
-    promptAction.showToast({ message: `数据更新成功` })
   }
 
   @Builder
