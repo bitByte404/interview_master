@@ -41,6 +41,9 @@ struct LoginPage {
     }
     // 2. 发送登录请求
     try {
+      // 正在加载，不重复请求
+      if (this.loading) return
+      this.loading = true // 开启加载中的效果
       const user = await http.request<User, LoginData>({
         url: '/login',
         method: 'post',
@@ -58,6 +61,8 @@ struct LoginPage {
       promptAction.showToast({
         message: error.message
       })
+    } finally {
+      this.loading = false
     }
   }
 

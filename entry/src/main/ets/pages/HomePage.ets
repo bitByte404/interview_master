@@ -1,4 +1,5 @@
 import { HcClockIn, HcSearchBox } from "../commons/component"
+import { User } from "../models"
 import { HomeCategory } from "../views/Home/HomeCategory"
 
 @Component
@@ -6,6 +7,8 @@ import { HomeCategory } from "../views/Home/HomeCategory"
 export struct HomePage {
   @StorageProp('topHeight')
   topHeight: number = 0
+  @StorageProp('user')
+  user: User = {} as User
   build() {
     Column() {
       // 顶部搜索栏
@@ -14,7 +17,7 @@ export struct HomePage {
           .width(24)
           .aspectRatio(1)
         HcSearchBox({ layoutWeightValue: 1 })
-        HcClockIn({ clockInCount: 3 })
+        HcClockIn({ clockInCount: this.user.clockinNumbers })
       }
       .padding({ left: 16, right: 16 })
       .height(64)

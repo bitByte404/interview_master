@@ -1,6 +1,7 @@
 import { HcClockIn } from '../commons/component'
 import { router } from '@kit.ArkUI'
 import { statusBar } from '../commons/utils'
+import { User } from '../models'
 
 interface Nav {
   icon: ResourceStr
@@ -20,6 +21,9 @@ interface Tool {
 export struct MinePage {
   @StorageProp('topHeight')
   topHeight: number = 0
+
+  @StorageProp('user')
+  user: User = {} as User
 
   @Builder
   navBuilder(nav: Nav) {
@@ -82,15 +86,15 @@ export struct MinePage {
   build() {
     Column({ space: 16 }) {
       Row({ space: 12 }) {
-        Image($r('app.media.ic_mine_avatar'))
+        Image(this.user.avatar || $r('app.media.ic_mine_avatar'))
           .alt($r('app.media.ic_mine_avatar'))
           .width(55)
           .aspectRatio(1)
           .borderRadius(55)
-        // 是否登录
-        if (false) {
+        // 是否登录 唯一凭证 token
+        if (this.user.token) {
           Column({ space: 4 }) {
-            Text('用户名')
+            Text(this.user.nickName || this.user.username)
               .fontSize(18)
               .fontWeight(500)
               .maxLines(1)
@@ -119,7 +123,7 @@ export struct MinePage {
             })
         }
 
-        HcClockIn({ clockInCount: 10 })
+        HcClockIn({ clockInCount: this.user.clockinNumbers })
       }
       .width('100%')
       .height(100)
