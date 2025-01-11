@@ -13,10 +13,6 @@ interface TabItem {
 @Component
 struct Index {
   @State activeIndex: number = 0
-  @StorageProp('topHeight')
-  topHeight: number = 0
-  @StorageProp('bottomHeight')
-  bottomHeight: number = 0
   // struct Index 数据
   tabList: TabItem[] = [
     {
@@ -40,6 +36,8 @@ struct Index {
       name: '我的'
     }
   ]
+  @StorageProp('bottomHeight')
+  bottomHeight: number = 0
   @Builder
   TabBarBuilder(item: TabItem, index: number) {
     Column({ space: 5 }) {
@@ -81,10 +79,9 @@ struct Index {
     }
     .width('100%')
     .height('100%')
-    .backgroundColor($r('app.color.white'))
     .padding({
-      top: this.topHeight,
       bottom: this.bottomHeight
     })
+    .backgroundColor($r('app.color.white'))
   }
 }

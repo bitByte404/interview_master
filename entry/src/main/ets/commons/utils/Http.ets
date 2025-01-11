@@ -13,7 +13,7 @@ instance.interceptors.response.use((response: AxiosResponse) => {
     // 请求成功 - 业务处理成功
     return response.data.data
   }
-  // 业务处理失败
+  // 业务处理失败 （请求成功，但是业务功能失败）
   return Promise.reject(response.data)
 }, (error: AxiosError) => {
   // 对响应错误做点什么

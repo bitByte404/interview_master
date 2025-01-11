@@ -4,6 +4,8 @@ import { HomeCategory } from "../views/Home/HomeCategory"
 @Component
 @Preview
 export struct HomePage {
+  @StorageProp('topHeight')
+  topHeight: number = 0
   build() {
     Column() {
       // 顶部搜索栏
@@ -43,6 +45,9 @@ export struct HomePage {
     .width('100%')
     .height('100%')
     .backgroundColor($r('app.color.white'))
+    .padding({
+      top: this.topHeight,
+    })
   }
 
   @Builder

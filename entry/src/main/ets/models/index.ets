@@ -1,3 +1,14 @@
+// 用户类型
+export interface User {
+  id: string
+  username: string
+  avatar: string
+  token: string
+  nickName?: string
+  totalTime?: number // 学习时间
+  clockinNumbers?: number // 打卡时间
+}
+
 // 首页试题分类
 export interface QuestionType {
   id: number
