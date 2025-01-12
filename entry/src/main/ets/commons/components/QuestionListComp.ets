@@ -1,4 +1,4 @@
-import { QuestionItemComp } from "."
+import { QuestionItemComp } from "./"
 import { PageData, QuestionItem, QuestionListParams, SortType } from "../../models"
 import { auth, req } from "../utils"
 

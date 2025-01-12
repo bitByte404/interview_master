@@ -1,4 +1,4 @@
-import { HcSkeleton, HcSkeletonItem, QuestionListComp } from "../../commons/component"
+import { HcSkeleton, HcSkeletonItem, QuestionListComp } from "../../commons/components"
 import { req } from "../../commons/utils/Http"
 import { QuestionItem, QuestionType, SortType } from "../../models"
 import { emitter } from "@kit.BasicServicesKit"

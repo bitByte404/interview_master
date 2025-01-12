@@ -1,5 +1,5 @@
 import { router } from '@kit.ArkUI';
-import { QuestionPageParams } from '../commons/component';
+import { QuestionPageParams } from '../commons/components';
 
 @Entry
 @Component

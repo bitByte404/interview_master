@@ -1,4 +1,4 @@
-import { HcNavBar } from '../commons/component'
+import { HcNavBar } from '../commons/components'
 import { promptAction, router } from '@kit.ArkUI'
 import { auth, req } from '../commons/utils'
 import { User } from '../models'
@@ -123,12 +123,30 @@ struct LoginPage {
           Text('用户协议')
             .fontSize(14)
             .padding({ right: 4 })
+            .onClick(() => {
+              router.pushUrl({
+                url: 'pages/WebPage',
+                params: {
+                  title: '用户协议',
+                  src: 'http://110.41.143.89/user'
+                }
+              })
+            })
           Text('和')
             .fontSize(14)
             .fontColor($r('app.color.common_gray_01'))
             .padding({ right: 4 })
           Text('隐私政策')
             .fontSize(14)
+            .onClick(() => {
+              router.pushUrl({
+                url: 'pages/WebPage',
+                params: {
+                  title: '隐私政策',
+                  src: 'http://110.41.143.89/privacy'
+                }
+              })
+            })
         }
         .width('100%')
 
@@ -145,7 +163,6 @@ struct LoginPage {
               .fontColor($r('app.color.white'))
           }.onClick(() => {
             this.login()
-            promptAction.showToast({message: '开始登录'})
           })
         }
         .width('100%')

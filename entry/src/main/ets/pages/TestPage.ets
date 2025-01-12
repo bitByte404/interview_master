@@ -1,4 +1,4 @@
-import { HcSkeleton, HcSkeletonItem } from '../commons/component'
+import { HcSkeleton, HcSkeletonItem } from '../commons/components'
 
 @Entry
 @Component

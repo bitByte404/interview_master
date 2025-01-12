@@ -1,4 +1,4 @@
-import { HcClockIn, HcSearchBox } from "../commons/component"
+import { HcClockIn, HcSearchBox } from "../commons/components"
 import { auth, UserInterviewKey } from "../commons/utils"
 import { User } from "../models"
 import { HomeCategory } from "../views/Home/HomeCategory"

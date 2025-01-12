@@ -1,4 +1,4 @@
-import { HcClockIn } from '../commons/component'
+import { HcClockIn } from '../commons/components'
 import { router } from '@kit.ArkUI'
 import { auth, formatTime, req, logger, statusBar, UserInterviewKey } from '../commons/utils'
 import { User } from '../models'

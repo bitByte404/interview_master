@@ -1,4 +1,4 @@
-import { HcTag } from "."
+import { HcTag } from "./"
 import { QuestionItem } from "../../models"
 
 @Component

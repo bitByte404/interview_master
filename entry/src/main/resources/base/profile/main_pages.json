@@ -3,6 +3,7 @@
     "pages/Index",
     "pages/QuestionPage",
     "pages/TestPage",
-    "pages/LoginPage"
+    "pages/LoginPage",
+    "pages/WebPage"
   ]
 }
