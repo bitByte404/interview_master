@@ -28,6 +28,17 @@ export interface QuestionItem {
   readFlag: 0 | 1 // 是否已看
 }
 
+export interface QuestionDetail extends QuestionItem {
+  /* 答案 */
+  answer: string
+  /* 是否收藏 */
+  collectFlag: 0 | 1
+  /* 是否点赞 */
+  likeFlag: 0 | 1
+  /* 所属模块 */
+  stage: string[]
+}
+
 // 首页试题数据列表结果类型
 export interface PageData<T> {
   total: number
