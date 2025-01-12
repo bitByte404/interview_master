@@ -2,6 +2,10 @@ import { QuestionItemComp } from "."
 import { PageData, QuestionItem, QuestionListParams, SortType } from "../../models"
 import { auth, req } from "../utils"
 
+export interface QuestionPageParams {
+  item: QuestionItem
+}
+
 @Component
 export struct QuestionListComp {
   @State isRefreshing: boolean = false
@@ -71,7 +75,8 @@ export struct QuestionListComp {
             QuestionItemComp({ item })
               .onClick(() => {
                 auth.checkAuth({
-                  url: 'pages/QuestionPage'
+                  url: 'pages/QuestionPage',
+                  params: { item } as QuestionPageParams
                 })
               })
           }

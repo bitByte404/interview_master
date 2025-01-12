@@ -1,7 +1,8 @@
 import { HcClockIn, HcSearchBox } from "../commons/component"
-import { UserInterviewKey } from "../commons/utils"
+import { auth, UserInterviewKey } from "../commons/utils"
 import { User } from "../models"
 import { HomeCategory } from "../views/Home/HomeCategory"
+import { promptAction } from "@kit.ArkUI"
 
 @Component
 @Preview
@@ -17,6 +18,18 @@ export struct HomePage {
         Image($r('app.media.ic_home_scan'))
           .width(24)
           .aspectRatio(1)
+          .onClick(() => {
+            // 执行扫码逻辑
+            // 1. 判断是否登录
+
+            // 2. 登录后执行扫码逻辑
+            auth.checkAuth(() => {
+              // 执行对应的业务逻辑
+              promptAction.showToast({
+                message: '执行扫码逻辑'
+              })
+            })
+          })
         HcSearchBox({ layoutWeightValue: 1 })
         HcClockIn({ clockInCount: this.user.clockinNumbers })
       }
