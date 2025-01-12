@@ -2,6 +2,8 @@ import { HcNavBar } from '../commons/component'
 import { promptAction, router } from '@kit.ArkUI'
 import { auth, req } from '../commons/utils'
 import { User } from '../models'
+import { emitter } from '@kit.BasicServicesKit'
+import { LOGIN_EVENT } from '../commons/constants'
 
 interface LoginData {
   username: string
@@ -55,6 +57,15 @@ struct LoginPage {
       // 3. 将用户信息存储到AppStorage中
       // AppStorage.setOrCreate<User>('user', user)
       auth.setUser(user)
+
+      // 触发emitter事件，通知首页，开启下拉刷新行为
+      emitter.emit(LOGIN_EVENT, {
+        data: {
+          name: 'cw',
+          age: '20'
+        }
+      })
+
       // 4. 返回个人中心
       router.back()
     } catch (error) {
@@ -126,9 +137,9 @@ struct LoginPage {
             }
             Text('立即登录')
               .fontColor($r('app.color.white'))
-          }
-          .onClick(() => {
+          }.onClick(() => {
             this.login()
+            promptAction.showToast({message: '开始登录'})
           })
         }
         .width('100%')

@@ -1,6 +1,9 @@
 import { HcSkeleton, HcSkeletonItem, QuestionListComp } from "../../commons/component"
 import { req } from "../../commons/utils/Http"
 import { QuestionItem, QuestionType, SortType } from "../../models"
+import { emitter } from "@kit.BasicServicesKit"
+import { LOGIN_EVENT } from "../../commons/constants"
+import { promptAction } from "@kit.ArkUI"
 
 @Component
 export struct HomeCategory {
@@ -14,6 +17,10 @@ export struct HomeCategory {
 
   aboutToAppear() {
     this.getQuestionList()
+    // 订阅emitter事件
+    emitter.on(LOGIN_EVENT, (event: emitter.EventData) => {
+      this.getQuestionList()
+    })
   }
 
   async getQuestionList() {
