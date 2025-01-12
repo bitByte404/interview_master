@@ -1,7 +1,7 @@
 @Entry
 @Component
 struct QuestionPage {
-  @State message: string = 'Hello World';
+  @State message: string = '试题详情';
 
   build() {
     RelativeContainer() {

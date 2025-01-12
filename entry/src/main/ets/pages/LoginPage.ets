@@ -24,6 +24,7 @@ struct LoginPage {
   @State
   loading: boolean = false
 
+
   async login() {
     // 1. 进行校验
     if (this.mobile.trim() == '') {
@@ -59,15 +60,20 @@ struct LoginPage {
       auth.setUser(user)
 
       // 触发emitter事件，通知首页，开启下拉刷新行为
-      emitter.emit(LOGIN_EVENT, {
-        data: {
-          name: 'cw',
-          age: '20'
-        }
-      })
+      emitter.emit(LOGIN_EVENT)
 
       // 4. 返回个人中心
-      router.back()
+      // 根据当前业务逻辑 - 选择性的去跳转到某页面
+      const params =  router.getParams() as Record<string, string>
+      if (params?.return_url) {
+        // 回到用户本身想去的页面
+        router.replaceUrl({
+          url: params.return_url,
+          params
+        })
+      } else {
+        router.back()
+      }
     } catch (error) {
       // 5. 失败情况处理
       promptAction.showToast({

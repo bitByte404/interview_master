@@ -1,6 +1,6 @@
 import { QuestionItemComp } from "."
 import { PageData, QuestionItem, QuestionListParams, SortType } from "../../models"
-import { req } from "../utils"
+import { auth, req } from "../utils"
 
 @Component
 export struct QuestionListComp {
@@ -69,6 +69,11 @@ export struct QuestionListComp {
         ForEach(this.list, (item: QuestionItem, index) => {
           ListItem() {
             QuestionItemComp({ item })
+              .onClick(() => {
+                auth.checkAuth({
+                  url: 'pages/QuestionPage'
+                })
+              })
           }
         })
         this.loadMoreBuilder()
