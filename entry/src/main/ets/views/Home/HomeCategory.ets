@@ -1,5 +1,5 @@
 import { HcSkeleton, HcSkeletonItem, QuestionListComp } from "../../commons/component"
-import { http } from "../../commons/utils/Http"
+import { req } from "../../commons/utils/Http"
 import { QuestionItem, QuestionType, SortType } from "../../models"
 
 @Component
@@ -18,7 +18,7 @@ export struct HomeCategory {
 
   async getQuestionList() {
     this.isLoading = true
-    this.questionList = await http.request<QuestionType[]>({
+    this.questionList = await req.request<QuestionType[]>({
       url: 'question/type',
     })
     this.isLoading = false

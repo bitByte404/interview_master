@@ -1,7 +1,8 @@
 import { HcClockIn } from '../commons/component'
 import { router } from '@kit.ArkUI'
-import { statusBar } from '../commons/utils'
+import { auth, formatTime, req, logger, statusBar, UserInterviewKey } from '../commons/utils'
 import { User } from '../models'
+import { AxiosError, AxiosHeaders } from '@ohos/axios'
 
 interface Nav {
   icon: ResourceStr
@@ -22,7 +23,7 @@ export struct MinePage {
   @StorageProp('topHeight')
   topHeight: number = 0
 
-  @StorageProp('user')
+  @StorageProp(UserInterviewKey)
   user: User = {} as User
 
   @Builder
@@ -148,7 +149,7 @@ export struct MinePage {
         this.navBuilder({
           icon: $r('app.media.ic_mine_study'),
           name: '累计学时',
-          other: '10小时',
+          other: formatTime(this.user.totalTime),
           onClick: () => {
             // TODO
           }
@@ -177,6 +178,23 @@ export struct MinePage {
       .backgroundColor($r('app.color.white'))
       .borderRadius(8)
 
+      Button('获取用户信息')
+        .onClick(() => {
+          req.request<User>({
+            url: '/userInfo',
+          })
+            .then(res => {
+              logger.info('用户信息成功', JSON.stringify(res))
+            })
+            .catch((error: AxiosError) => {
+              logger.error('用户信息请求失败', JSON.stringify(error))
+            })
+        })
+
+      Button('清除用户信息')
+        .onClick(() => {
+          auth.setUser({} as User)
+        })
     }
     .padding(16)
     .backgroundColor($r('app.color.common_gray_bg'))

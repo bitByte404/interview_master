@@ -1,4 +1,5 @@
 import { HcClockIn, HcSearchBox } from "../commons/component"
+import { UserInterviewKey } from "../commons/utils"
 import { User } from "../models"
 import { HomeCategory } from "../views/Home/HomeCategory"
 
@@ -7,7 +8,7 @@ import { HomeCategory } from "../views/Home/HomeCategory"
 export struct HomePage {
   @StorageProp('topHeight')
   topHeight: number = 0
-  @StorageProp('user')
+  @StorageProp(UserInterviewKey)
   user: User = {} as User
   build() {
     Column() {

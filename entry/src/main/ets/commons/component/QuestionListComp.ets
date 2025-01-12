@@ -1,6 +1,6 @@
 import { QuestionItemComp } from "."
 import { PageData, QuestionItem, QuestionListParams, SortType } from "../../models"
-import { http } from "../utils"
+import { req } from "../utils"
 
 @Component
 export struct QuestionListComp {
@@ -112,7 +112,7 @@ export struct QuestionListComp {
   }
 
   getQuestionList(): Promise<PageData<QuestionItem>> {
-    return http.request<PageData<QuestionItem>>({
+    return req.request<PageData<QuestionItem>>({
       url: '/question/list',
       params: {
         type: this.typeId,

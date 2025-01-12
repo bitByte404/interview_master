@@ -1,6 +1,6 @@
 import { HcNavBar } from '../commons/component'
 import { promptAction, router } from '@kit.ArkUI'
-import { http } from '../commons/utils'
+import { auth, req } from '../commons/utils'
 import { User } from '../models'
 
 interface LoginData {
@@ -44,7 +44,7 @@ struct LoginPage {
       // 正在加载，不重复请求
       if (this.loading) return
       this.loading = true // 开启加载中的效果
-      const user = await http.request<User, LoginData>({
+      const user = await req.request<User, LoginData>({
         url: '/login',
         method: 'post',
         data: {
@@ -53,7 +53,8 @@ struct LoginPage {
         }
       })
       // 3. 将用户信息存储到AppStorage中
-      AppStorage.setOrCreate<User>('user', user)
+      // AppStorage.setOrCreate<User>('user', user)
+      auth.setUser(user)
       // 4. 返回个人中心
       router.back()
     } catch (error) {
@@ -125,10 +126,10 @@ struct LoginPage {
             }
             Text('立即登录')
               .fontColor($r('app.color.white'))
-              .onClick(() => {
-                this.login()
-              })
           }
+          .onClick(() => {
+            this.login()
+          })
         }
         .width('100%')
         .backgroundColor('none')

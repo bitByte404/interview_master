@@ -1,9 +1,24 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from '@ohos/axios'
-import { logger } from '.'
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from '@ohos/axios'
+import { auth, logger } from '.'
 
 export  const instance = axios.create({
   baseURL: 'https://api-harmony-teach.itheima.net/hm', // 请求基地址
   timeout: 10000, // 超时时间
+})
+
+// 添加请求拦截器
+// 作用：统一携带参数，比如身份认证标识token
+instance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+  // 对请求数据做点什么
+  logger.info('请求拦截器', JSON.stringify(config))
+  const user = auth.getUser()
+  if (user.token) {
+    config.headers.Authorization = `Bearer ${user.token}`
+  }
+  return config
+}, (error: AxiosError) => {
+  // 对请求错误做点什么
+  return Promise.reject(error)
 })
 
 instance.interceptors.response.use((response: AxiosResponse) => {
@@ -31,4 +46,4 @@ class Http {
   }
 }
 
-export const http = new Http()
+export const req = new Http()
