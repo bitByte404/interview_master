@@ -195,6 +195,13 @@ export struct MinePage {
         .onClick(() => {
           auth.setUser({} as User)
         })
+
+      Button('修改token-失效')
+        .onClick(() => {
+          const user = auth.getUser()
+          user.token = 'xxx'
+          auth.setUser(user)
+        })
     }
     .padding(16)
     .backgroundColor($r('app.color.common_gray_bg'))
