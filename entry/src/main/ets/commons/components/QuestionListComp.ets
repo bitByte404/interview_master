@@ -4,6 +4,7 @@ import { auth, req } from "../utils"
 
 export interface QuestionPageParams {
   item: QuestionItem
+  list: QuestionItem[]
 }
 
 @Component
@@ -76,7 +77,7 @@ export struct QuestionListComp {
               .onClick(() => {
                 auth.checkAuth({
                   url: 'pages/QuestionPage',
-                  params: { item } as QuestionPageParams
+                  params: { item, list: this.list } as QuestionPageParams
                 })
               })
           }

@@ -9,6 +9,7 @@ export interface User {
   clockinNumbers?: number // 打卡时间
 }
 
+
 // 首页试题分类
 export interface QuestionType {
   id: number
@@ -60,7 +61,14 @@ export enum SortType {
 export interface QuestionListParams {
   type: number
   questionBankType: 9 | 10
-  sort? : SortType
+  sort?: SortType
   page?: number
   pageSize?: number
+}
+
+// 点赞或收藏
+export interface QuestionOptParams {
+  id: string // 试题id
+  type: 0 | 1 // 0面试题 1面经
+  optType: 1 | 2 // 1点赞 2收藏
 }
