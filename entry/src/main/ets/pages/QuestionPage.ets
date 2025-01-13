@@ -3,6 +3,7 @@ import { promptAction, router } from '@kit.ArkUI'
 import { QuestionDetail, QuestionOptParams } from '../models'
 import { req } from '../commons/utils'
 import { webview } from '@kit.ArkWeb'
+import { QuestionShareDialog } from '../views/Question/QuestionShareDialog'
 
 @Entry
 @Component
@@ -38,6 +39,9 @@ struct QuestionPage {
         })
       MenuItem({ content: '点我反馈' })
       MenuItem({ content: '试题分享' })
+        .onClick(() => {
+          this.shareDialog.open()
+        })
     }
     .width(108)
   }
@@ -72,12 +76,19 @@ struct QuestionPage {
   @State list: QuestionDetail[] = []
   @State questionIndex: number = 0
   controller: webview.WebviewController = new webview.WebviewController()
-  // 创建dialog的实例对象
+  // 创建loading dialog的实例对象
   dialog = new CustomDialogController({
     builder: HcLoadingDialog(),
     // 自定义弹窗样式
     customStyle: true,
   })
+
+  // 创建分享 dialog的实例对象
+  shareDialog = new CustomDialogController({
+    builder: QuestionShareDialog({item: this.item}),
+    customStyle: true
+  })
+
 
   async aboutToAppear() {
     const params = router.getParams() as QuestionPageParams
@@ -102,6 +113,7 @@ struct QuestionPage {
 
   onPageHide(): void {
     this.dialog.close()
+    this.shareDialog.close()
   }
 
   // 获取试题详情
