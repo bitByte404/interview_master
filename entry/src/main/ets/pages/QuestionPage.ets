@@ -98,13 +98,15 @@ struct QuestionPage {
       // 试题列表
       this.list = params.list as QuestionDetail[]
       this.list.findIndex(item => item.id == this.item.id)
-      // 加载前开启loading效果
-      this.dialog.open()
-      this.item = await this.getQuestionDetail(this.item.id)
-      // 默认加载的试题，防止数组中进行缓存
-      this.list[this.questionIndex] = this.item
-      // 加载后关闭loading效果
-      this.dialog.close()
+      if (!this.item.answer) {
+        // 加载前开启loading效果
+        this.dialog.open()
+        this.item = await this.getQuestionDetail(this.item.id)
+        // 默认加载的试题，防止数组中进行缓存
+        this.list[this.questionIndex] = this.item
+        // 加载后关闭loading效果
+        this.dialog.close()
+      }
       // 请求和加载html页面都是异步的
       // 血药保证在数据加载结束之后，重新执行question.html页面
       this.controller.loadUrl($rawfile('question.html'))

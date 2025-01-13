@@ -1,8 +1,10 @@
-import { HcClockIn, HcSearchBox } from "../commons/components"
-import { auth, UserInterviewKey } from "../commons/utils"
-import { User } from "../models"
+import { HcClockIn, HcSearchBox, QuestionPageParams } from "../commons/components"
+import { auth, req, UserInterviewKey } from "../commons/utils"
+import { QuestionDetail, User } from "../models"
 import { HomeCategory } from "../views/Home/HomeCategory"
-import { promptAction } from "@kit.ArkUI"
+import { promptAction, router } from "@kit.ArkUI"
+import { scanBarcode } from "@kit.ScanKit"
+
 
 @Component
 @Preview
@@ -11,6 +13,7 @@ export struct HomePage {
   topHeight: number = 0
   @StorageProp(UserInterviewKey)
   user: User = {} as User
+
   build() {
     Column() {
       // 顶部搜索栏
@@ -21,13 +24,32 @@ export struct HomePage {
           .onClick(() => {
             // 执行扫码逻辑
             // 1. 判断是否登录
-
             // 2. 登录后执行扫码逻辑
-            auth.checkAuth(() => {
+            auth.checkAuth(async () => {
               // 执行对应的业务逻辑
-              promptAction.showToast({
-                message: '执行扫码逻辑'
-              })
+              if (canIUse('SystemCapability.Multimedia.Scan.ScanBarcode')) {
+                // 获取扫码结果
+                const result = await scanBarcode.startScanForResult(getContext(this))
+                try  {
+                  const item = await req.request<QuestionDetail>({
+                   url: `/question/${result.originalValue}`
+                  })
+                  // 跳转界面
+                  router.pushUrl({
+                    url: 'pages/QuestionPage',
+                    params: {
+                      item,
+                      list: [item]
+                    } as QuestionPageParams
+                  })
+                }catch (error) {
+                  promptAction.showToast({
+                    message: '该试题不存在'
+                  })
+                }
+              } else {
+                promptAction.showToast({ message: '该设备不具备扫码能力' })
+              }
             })
           })
         HcSearchBox({ layoutWeightValue: 1 })
