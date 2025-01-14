@@ -1,9 +1,10 @@
 import { HcLoadingDialog, HcNavBar, HcTag, QuestionPageParams } from '../commons/components'
 import { promptAction, router } from '@kit.ArkUI'
 import { QuestionDetail, QuestionOptParams } from '../models'
-import { req } from '../commons/utils'
+import { req, tracking } from '../commons/utils'
 import { webview } from '@kit.ArkWeb'
 import { QuestionShareDialog } from '../views/Question/QuestionShareDialog'
+import { it } from '@ohos/hypium'
 
 @Entry
 @Component
@@ -113,9 +114,20 @@ struct QuestionPage {
     }
   }
 
+  startTime: number = Date.now()
+  onPageShow(): void {
+    // 页面打开
+    // 记录开始时间
+    this.startTime = Date.now()
+  }
+
   onPageHide(): void {
     this.dialog.close()
     this.shareDialog.close()
+    // 记录离开时间、上报
+    tracking.record(this.startTime, Date.now(), this.item.id)
+    // 完成上报，通知服务器
+    tracking.report()
   }
 
   // 获取试题详情
@@ -135,6 +147,10 @@ struct QuestionPage {
     }
     this.questionIndex = index
     const item = this.list[index]
+    // 记录埋点数据
+    tracking.record(this.startTime, Date.now(), item.id)
+    // 重新记录开始时间
+    this.startTime = Date.now()
     // 加载完整的试题数据
     if (item.answer) {
       // 不需要请求，直接赋值

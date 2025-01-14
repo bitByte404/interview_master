@@ -1,6 +1,6 @@
 import { HcNavBar } from '../commons/components'
 import { promptAction, router } from '@kit.ArkUI'
-import { auth, req } from '../commons/utils'
+import { auth, req, tracking } from '../commons/utils'
 import { User } from '../models'
 import { emitter } from '@kit.BasicServicesKit'
 import { LOGIN_EVENT } from '../commons/constants'
@@ -61,6 +61,9 @@ struct LoginPage {
 
       // 触发emitter事件，通知首页，开启下拉刷新行为
       emitter.emit(LOGIN_EVENT)
+
+      // 主动上报
+      tracking.report(true)
 
       // 4. 返回个人中心
       // 根据当前业务逻辑 - 选择性的去跳转到某页面

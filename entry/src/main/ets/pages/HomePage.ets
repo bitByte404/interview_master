@@ -1,5 +1,5 @@
 import { HcClockIn, HcSearchBox, QuestionPageParams } from "../commons/components"
-import { auth, req, UserInterviewKey } from "../commons/utils"
+import { auth, req, tracking, UserInterviewKey } from "../commons/utils"
 import { QuestionDetail, User } from "../models"
 import { HomeCategory } from "../views/Home/HomeCategory"
 import { promptAction, router } from "@kit.ArkUI"
@@ -87,6 +87,11 @@ export struct HomePage {
     .padding({
       top: this.topHeight,
     })
+  }
+
+  aboutToAppear(): void {
+    // 主动上报
+    tracking.report(true)
   }
 
   @Builder

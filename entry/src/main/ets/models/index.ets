@@ -72,3 +72,10 @@ export interface QuestionOptParams {
   type: 0 | 1 // 0面试题 1面经
   optType: 1 | 2 // 1点赞 2收藏
 }
+
+// 上报数据
+export interface TimeItem {
+  questionId: string
+  startTime: number
+  endTime: number
+}
