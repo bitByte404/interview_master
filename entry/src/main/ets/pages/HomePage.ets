@@ -1,5 +1,5 @@
 import { HcClockIn, HcSearchBox, QuestionPageParams } from "../commons/components"
-import { auth, req, tracking, UserInterviewKey } from "../commons/utils"
+import { auth, req, requestClockIn, tracking, UserInterviewKey } from "../commons/utils"
 import { QuestionDetail, User } from "../models"
 import { HomeCategory } from "../views/Home/HomeCategory"
 import { promptAction, router } from "@kit.ArkUI"
@@ -30,9 +30,9 @@ export struct HomePage {
               if (canIUse('SystemCapability.Multimedia.Scan.ScanBarcode')) {
                 // 获取扫码结果
                 const result = await scanBarcode.startScanForResult(getContext(this))
-                try  {
+                try {
                   const item = await req.request<QuestionDetail>({
-                   url: `/question/${result.originalValue}`
+                    url: `/question/${result.originalValue}`
                   })
                   // 跳转界面
                   router.pushUrl({
@@ -42,7 +42,7 @@ export struct HomePage {
                       list: [item]
                     } as QuestionPageParams
                   })
-                }catch (error) {
+                } catch (error) {
                   promptAction.showToast({
                     message: '该试题不存在'
                   })
@@ -54,6 +54,9 @@ export struct HomePage {
           })
         HcSearchBox({ layoutWeightValue: 1 })
         HcClockIn({ clockInCount: this.user.clockinNumbers })
+          .onClick(() => {
+            requestClockIn()
+          })
       }
       .padding({ left: 16, right: 16 })
       .height(64)

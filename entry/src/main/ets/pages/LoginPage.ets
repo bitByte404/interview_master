@@ -164,9 +164,7 @@ struct LoginPage {
             }
             Text('立即登录')
               .fontColor($r('app.color.white'))
-          }.onClick(() => {
-            this.login()
-          })
+          }
         }
         .width('100%')
         .backgroundColor('none')
@@ -178,7 +176,7 @@ struct LoginPage {
         })
         .stateEffect(false)
         .onClick(() => {
-          // TODO
+          this.login()
         })
       }
       .padding({ left: 36, right: 36, top: 30 })

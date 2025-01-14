@@ -1,6 +1,6 @@
 import { HcClockIn } from '../commons/components'
 import { router } from '@kit.ArkUI'
-import { auth, formatTime, req, logger, statusBar, UserInterviewKey } from '../commons/utils'
+import { auth, formatTime, req, logger, statusBar, UserInterviewKey, requestClockIn } from '../commons/utils'
 import { User } from '../models'
 import { AxiosError, AxiosHeaders } from '@ohos/axios'
 
@@ -22,7 +22,6 @@ interface Tool {
 export struct MinePage {
   @StorageProp('topHeight')
   topHeight: number = 0
-
   @StorageProp(UserInterviewKey)
   user: User = {} as User
 
@@ -125,6 +124,9 @@ export struct MinePage {
         }
 
         HcClockIn({ clockInCount: this.user.clockinNumbers })
+          .onClick(() => {
+            requestClockIn()
+          })
       }
       .width('100%')
       .height(100)
