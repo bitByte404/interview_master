@@ -64,6 +64,7 @@ export interface QuestionListParams {
   sort?: SortType
   page?: number
   pageSize?: number
+  keyword?: string
 }
 
 // 点赞或收藏

@@ -23,6 +23,7 @@ export struct QuestionListComp {
   @Watch('changeSort')
   sort: SortType = SortType.Default
   @State page: number = 1
+  @Prop keyword: string // 查询关键字
 
   changeSort() {
     this.isRefreshing = true
@@ -130,7 +131,8 @@ export struct QuestionListComp {
         sort: this.sort,
         questionBankType: 10,
         pageSize: 10, // 每页条数
-        page: this.page
+        page: this.page,
+        keyword: this.keyword
       } as QuestionListParams
     })
   }
