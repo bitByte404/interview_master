@@ -153,7 +153,11 @@ export struct MinePage {
           name: '累计学时',
           other: formatTime(this.user.totalTime),
           onClick: () => {
-            // TODO
+            auth.checkAuth(() => {
+              router.pushUrl({
+                url: 'pages/StudyTimePage'
+              })
+            })
           }
         })
       }
