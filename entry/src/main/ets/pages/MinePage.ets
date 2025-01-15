@@ -173,7 +173,13 @@ export struct MinePage {
             })
           }
         })
-        this.toolsBuilder({ icon: $r('app.media.ic_mine_ai'), name: '面通AI' })
+        this.toolsBuilder({
+          icon: $r('app.media.ic_mine_ai'), name: '面通AI', onClick: () => {
+            router.pushUrl({
+              url: 'pages/AudioPage'
+            })
+          }
+        })
         this.toolsBuilder({ icon: $r('app.media.ic_mine_invite'), name: '推荐分享' })
         this.toolsBuilder({ icon: $r('app.media.ic_mine_file'), name: '意见反馈' })
         this.toolsBuilder({ icon: $r('app.media.ic_mine_info'), name: '关于我们' })
