@@ -168,7 +168,9 @@ export struct MinePage {
       Column() {
         this.toolsBuilder({
           icon: $r('app.media.ic_mine_notes'), name: '开发常用词', onClick: () => {
-            // TODO
+            router.pushUrl({
+              url: 'pages/WordPage'
+            })
           }
         })
         this.toolsBuilder({ icon: $r('app.media.ic_mine_ai'), name: '面通AI' })

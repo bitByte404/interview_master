@@ -12,6 +12,5 @@ export * from './History'
 export * from './ClockIn'
 
 export const calcPercentage= (done:number, total: number) => {
-  logger.warn('学习进度', `done:${done}, total:${total}`)
   return Math.round( done / total * 100) + '%'
 }
