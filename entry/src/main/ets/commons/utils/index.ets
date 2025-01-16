@@ -1,5 +1,3 @@
-import { logger } from './Logger'
-
 // 将其他文件中的成员全部导出
 export * from './Logger'
 export * from './FullScreen'
@@ -11,6 +9,7 @@ export * from './Tracking'
 export * from './History'
 export * from './ClockIn'
 export * from './Permission'
+export * from './AudioDB'
 
 export const calcPercentage= (done:number, total: number) => {
   return Math.round( done / total * 100) + '%'
