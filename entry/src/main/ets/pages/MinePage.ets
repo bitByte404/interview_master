@@ -192,30 +192,30 @@ export struct MinePage {
       .backgroundColor($r('app.color.white'))
       .borderRadius(8)
 
-      Button('获取用户信息')
-        .onClick(() => {
-          req.request<User>({
-            url: '/userInfo',
-          })
-            .then(res => {
-              logger.info('用户信息成功', JSON.stringify(res))
-            })
-            .catch((error: AxiosError) => {
-              logger.error('用户信息请求失败', JSON.stringify(error))
-            })
-        })
+      /*      Button('获取用户信息')
+              .onClick(() => {
+                req.request<User>({
+                  url: '/userInfo',
+                })
+                  .then(res => {
+                    logger.info('用户信息成功', JSON.stringify(res))
+                  })
+                  .catch((error: AxiosError) => {
+                    logger.error('用户信息请求失败', JSON.stringify(error))
+                  })
+              })
 
-      Button('清除用户信息')
-        .onClick(() => {
-          auth.setUser({} as User)
-        })
+            Button('清除用户信息')
+              .onClick(() => {
+                auth.setUser({} as User)
+              })
 
-      Button('修改token-失效')
-        .onClick(() => {
-          const user = auth.getUser()
-          user.token = 'xxx'
-          auth.setUser(user)
-        })
+            Button('修改token-失效')
+              .onClick(() => {
+                const user = auth.getUser()
+                user.token = 'xxx'
+                auth.setUser(user)
+              })*/
     }
     .padding(16)
     .backgroundColor($r('app.color.common_gray_bg'))
