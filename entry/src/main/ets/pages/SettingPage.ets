@@ -4,6 +4,7 @@ import { auth } from '../commons/utils/Auth';
 import { User } from '../models';
 import { SettingsThemeDialog } from '../views/Settings/SettingsThemeDialog';
 import { fileIo, storageStatistics } from '@kit.CoreFileKit';
+import { bundleManager } from '@kit.AbilityKit';
 
 export interface Tool {
   icon?: ResourceStr
@@ -23,6 +24,7 @@ struct SettingsPage {
   @StorageProp('isDark')
   isDark: boolean = false
   @State cacheSize: string = '0.00MB'
+  @State version: string = ''
 
   @Builder
   toolsBuilder(tool: Tool) {
@@ -83,12 +85,21 @@ struct SettingsPage {
     }
     // 应用下
     const appCtx = ctx.getApplicationContext()
-    const appCacheDir =  appCtx.cacheDir
+    const appCacheDir = appCtx.cacheDir
     const isAppExist = fileIo.accessSync(appCacheDir)
     if (isAppExist) {
       fileIo.rmdirSync(appCacheDir)
     }
     this.calcCache()
+  }
+
+  async getVersion() {
+    const res = await bundleManager.getBundleInfoForSelf(bundleManager.BundleFlag.GET_BUNDLE_INFO_WITH_APPLICATION)
+    this.version = 'v' + res.versionName
+  }
+
+  aboutToAppear(): void {
+    this.getVersion()
   }
 
   build() {
@@ -124,7 +135,7 @@ struct SettingsPage {
             })
           }
         })
-        this.toolsBuilder({ name: '当前版本', value: '1.0.0', radius: 2 })
+        this.toolsBuilder({ name: '当前版本', value: this.version , radius: 2 })
         Blank()
           .height(15)
         Text('退出账号')
