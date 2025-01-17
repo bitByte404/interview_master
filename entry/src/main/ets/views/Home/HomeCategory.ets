@@ -14,6 +14,8 @@ export struct HomeCategory {
   @State filterSort: SortType = SortType.Default // 题目的高亮排序规则
   @State sort: SortType = SortType.Default
   @State isLoading: boolean = false
+  @StorageProp('isDark')
+  isDark: boolean = false
 
   aboutToAppear() {
     this.getQuestionList()
@@ -179,7 +181,7 @@ export struct HomeCategory {
   }
 
   build() {
-    if ( this.isLoading) {
+    if (this.isLoading) {
       // 骨架屏组件
       this.SkeletonBuilder()
     } else {
@@ -215,7 +217,7 @@ export struct HomeCategory {
         .backgroundColor($r('app.color.white'))
         .linearGradient({
           angle: 90,
-          colors: [['#00ffffff', 0], ['#ffffff', 0.285]]
+          colors: [[this.isDark ? '#00131313' : '#00ffffff', 0], ['#ffffff', 0.285]]
         })
         .width(56)
         .height(44)

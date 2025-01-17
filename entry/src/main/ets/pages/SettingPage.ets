@@ -1,8 +1,9 @@
-import { router } from '@kit.ArkUI';
+import { promptAction, router } from '@kit.ArkUI';
 import { HcNavBar } from '../commons/components';
 import { auth } from '../commons/utils/Auth';
 import { User } from '../models';
 import { SettingsThemeDialog } from '../views/Settings/SettingsThemeDialog';
+import { fileIo, storageStatistics } from '@kit.CoreFileKit';
 
 export interface Tool {
   icon?: ResourceStr
@@ -19,6 +20,10 @@ struct SettingsPage {
     builder: SettingsThemeDialog(),
     alignment: DialogAlignment.Bottom,
   })
+  @StorageProp('isDark')
+  isDark: boolean = false
+  @State cacheSize: string = '0.00MB'
+
   @Builder
   toolsBuilder(tool: Tool) {
     Row() {
@@ -57,6 +62,35 @@ struct SettingsPage {
     })
   }
 
+  onPageShow(): void {
+    this.calcCache()
+  }
+
+  async calcCache() {
+    const result = await storageStatistics.getCurrentBundleStats()
+    this.cacheSize = (result.cacheSize / 1024 / 1024).toFixed(2) + 'MB'
+  }
+
+  async clearCache() {
+    // 清除缓存文件
+    // 当前包下
+    const ctx = getContext(this)
+    const cacheDir = ctx.cacheDir
+    // 判断是否可以访问该文件
+    const isExist = fileIo.accessSync(cacheDir)
+    if (isExist) {
+      fileIo.rmdirSync(cacheDir)
+    }
+    // 应用下
+    const appCtx = ctx.getApplicationContext()
+    const appCacheDir =  appCtx.cacheDir
+    const isAppExist = fileIo.accessSync(appCacheDir)
+    if (isAppExist) {
+      fileIo.rmdirSync(appCacheDir)
+    }
+    this.calcCache()
+  }
+
   build() {
     Column() {
       HcNavBar({ title: '设置', showRightIcon: false, showBorder: true })
@@ -76,16 +110,18 @@ struct SettingsPage {
         this.toolsBuilder({ name: '消息推送', radius: 1 })
         this.toolsBuilder({
           name: '深色模式',
-          value: '已关闭',
+          value: this.isDark ? '已开启' : '已关闭',
           radius: 1,
           onClick: () => {
-            // TODO 设置主题
             this.dialog.open()
           }
         })
         this.toolsBuilder({
-          name: '清除应用缓存', value: '10MB', onClick: () => {
-            // TODO 清除缓存
+          name: '清除应用缓存', value: this.cacheSize, onClick: () => {
+            this.clearCache()
+            promptAction.showToast({
+              message: '清理缓存成功'
+            })
           }
         })
         this.toolsBuilder({ name: '当前版本', value: '1.0.0', radius: 2 })

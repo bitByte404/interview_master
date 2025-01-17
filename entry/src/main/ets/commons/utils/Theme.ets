@@ -1,4 +1,4 @@
-import { ConfigurationConstant } from "@kit.AbilityKit"
+import { common, ConfigurationConstant } from "@kit.AbilityKit"
 
 export const ThemeKey = 'hc-theme-key'
 
@@ -29,7 +29,13 @@ class Theme {
   private setTheme(colorMode: ConfigurationConstant.ColorMode) {
     AppStorage.set(ThemeKey, colorMode)
     const ctx = AppStorage.get<Context>('context')
-    ctx?.getApplicationContext().setColorMode(colorMode)
+    if (ctx) {
+      ctx.getApplicationContext().setColorMode(colorMode)
+    }
+    // 获取当前应用采用的颜色模式
+    const isDark = (ctx as common.UIAbilityContext).config.colorMode
+      == ConfigurationConstant.ColorMode.COLOR_MODE_DARK
+    AppStorage.setOrCreate('isDark', isDark)
   }
 }
 export const theme = new Theme()
