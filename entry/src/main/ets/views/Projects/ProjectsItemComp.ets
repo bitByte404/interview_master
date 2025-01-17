@@ -23,19 +23,22 @@ export struct ProjectsItemComp {
           .fontWeight(400)
           .fontSize(12)
           .fontColor($r('app.color.common_gray_01'))
+          .margin({
+            bottom: 10
+          })
 
           Text()
             .width('100%')
             .height(2)
             .backgroundColor($r('app.color.home_gray'))
         }
-        .height(20)
+        .height(30)
         .justifyContent(FlexAlign.SpaceBetween)
         .alignItems(HorizontalAlign.Start)
       }
       .layoutWeight(1)
       .alignItems(HorizontalAlign.Start)
-      .padding(10)
+      .padding({left: 10, right: 10, top: 10})
       .justifyContent(FlexAlign.SpaceBetween)
       .height('100%')
     }

@@ -51,20 +51,23 @@ export struct ProjectPage {
   SkeletonBuilder() {
     Column() {
       HcSkeleton() {
-        Column({space: 11}) {
+        Column({ space: 11 }) {
           ForEach(new Array(6).fill(0), () => {
+            Row({ space: 6 }) {
+              HcSkeletonItem({ widthValue: '20%', heightValue: '80' })
               Column({ space: 6 }) {
                 HcSkeletonItem({ widthValue: '70%' })
                 HcSkeletonItem({ widthValue: '75%' })
                 HcSkeletonItem({ widthValue: '70%' })
               }
-              .backgroundColor($r('app.color.white'))
-              .width('100%')
+              .layoutWeight(1)
               .height(90)
-              .borderRadius(9.5)
-              .padding(6)
               .alignItems(HorizontalAlign.Start)
               .justifyContent(FlexAlign.Center)
+            }
+            .backgroundColor($r('app.color.white'))
+            .borderRadius(9.5)
+            .padding(6)
           })
         }
         .width('100%')
@@ -80,8 +83,8 @@ export struct ProjectPage {
         .lineHeight(40)
         .width('100%')
         .textAlign(TextAlign.Start)
+        .padding({left: 14})
         .margin({
-          top: 8,
           bottom: 8,
           left: 16,
           right: 16
@@ -92,12 +95,12 @@ export struct ProjectPage {
         Column() {
           this.SkeletonBuilder()
         }
-          .margin({
-            left: 11,
-            right: 11
-          })
-          .layoutWeight(1)
-      } else  {
+        .margin({
+          left: 11,
+          right: 11
+        })
+        .layoutWeight(1)
+      } else {
         List({ space: 11 }) {
           ForEach(this.list, (item: ProjectType, index) => {
             ListItem() {
