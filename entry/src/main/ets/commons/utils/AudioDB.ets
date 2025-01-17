@@ -1,14 +1,14 @@
 import { Context } from "@kit.AbilityKit"
 import { relationalStore, ValuesBucket } from "@kit.ArkData"
-import { when } from "@ohos/hamock"
 
 export interface InterviewAudioItem extends ValuesBucket {
-  id: number
+  id: number | null
   user_id: string
   name: string
   path: string
   duration: number
   size: number
+  create_time: number
 }
 
 class AudioDB {
@@ -30,7 +30,8 @@ class AudioDB {
         name TEXT NOT NULL,
         path TEXT NOT NULL,
         duration INTEGER NOT NULL,
-        size INTEGER NOT NULL
+        size INTEGER NOT NULL,
+        create_time INTEGER NOT NULL
       )`
       await store.executeSql(sql)
       this.store = store
@@ -87,6 +88,7 @@ class AudioDB {
         path: resultSet.getString(resultSet.getColumnIndex('path')),
         duration: resultSet.getLong(resultSet.getColumnIndex('duration')),
         size: resultSet.getLong(resultSet.getColumnIndex('size')),
+        create_time: resultSet.getLong(resultSet.getColumnIndex('create_time')),
       })
     }
     // 关闭数据库防止内存泄露

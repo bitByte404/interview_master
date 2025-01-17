@@ -175,7 +175,7 @@ export struct MinePage {
         })
         this.toolsBuilder({
           icon: $r('app.media.ic_mine_ai'), name: '面通AI', onClick: () => {
-            router.pushUrl({
+            auth.checkAuth({
               url: 'pages/AudioPage'
             })
           }
