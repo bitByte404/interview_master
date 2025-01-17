@@ -19,6 +19,18 @@ export interface QuestionType {
   displayNewestFlag: 0 | 1 // 0表示不展示图标
 }
 
+export interface ProjectType extends QuestionType {
+  icon: string
+  describeInfo: string
+  tag: ProjectTags[]
+}
+
+export interface ProjectTags {
+  tagName: string
+  nameColor: string
+  borderColor: string
+}
+
 // 首页试题类型
 export interface QuestionItem {
   id: string
