@@ -1,4 +1,4 @@
-import { auth } from '../commons/utils/Auth'
+import { auth, theme } from '../commons/utils'
 import { HomePage } from './HomePage'
 import { InterviewPage } from './InterviewPage'
 import { MinePage } from './MinePage'
@@ -12,6 +12,7 @@ interface TabItem {
 
 // 初始化用户信息
 auth.initUser()
+theme.initTheme()
 
 @Entry
 @Component
@@ -42,6 +43,7 @@ struct Index {
   ]
   @StorageProp('bottomHeight')
   bottomHeight: number = 0
+
   @Builder
   TabBarBuilder(item: TabItem, index: number) {
     Column({ space: 5 }) {

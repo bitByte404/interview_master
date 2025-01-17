@@ -10,6 +10,7 @@ export * from './History'
 export * from './ClockIn'
 export * from './Permission'
 export * from './AudioDB'
+export * from './Theme'
 
 export const calcPercentage= (done:number, total: number) => {
   return Math.round( done / total * 100) + '%'
