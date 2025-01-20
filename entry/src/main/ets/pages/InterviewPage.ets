@@ -1,4 +1,5 @@
 import { HcSearchBox } from "../commons/components";
+import { SortType } from "../models";
 import { InterviewListComp } from "../views/Interview/InterviewTabComp";
 
 @Component
@@ -55,13 +56,21 @@ export struct InterviewPage {
           })
       }
 
-      Tabs({index: $$this.selectTabIndex}) {
-        ForEach(['最新', '推荐'], (item: string, index) => {
-          TabContent() {
-            InterviewListComp()
-          }
-          .tabBar(this.TabBarBuilder(item, index))
-        })
+      Tabs({ index: $$this.selectTabIndex }) {
+
+        TabContent() {
+          InterviewListComp({
+            sort: SortType.Default
+          })
+        }
+        .tabBar(this.TabBarBuilder('最新', 0))
+
+        TabContent() {
+          InterviewListComp({
+            sort: SortType.Commend
+          })
+        }
+        .tabBar(this.TabBarBuilder('推荐', 1))
       }
       .tabIndex(this.selectTabIndex)
     }

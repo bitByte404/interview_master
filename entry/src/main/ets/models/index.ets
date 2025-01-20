@@ -31,6 +31,22 @@ export interface ProjectTags {
   borderColor: string
 }
 
+// 面经类型
+export interface InterviewItem {
+  id: string
+  questionNo?: string
+  stem: string
+  content: string
+  likeCount: number // 点赞数
+  views: number // 浏览数
+}
+
+export interface InterviewData {
+  total: number
+  pageTotal: number
+  rows: InterviewItem[]
+}
+
 // 首页试题类型
 export interface QuestionItem {
   id: string
@@ -128,4 +144,74 @@ export interface StudyTimeCate {
 export interface StudyTimeData {
   totalTime: number
   studyData: StudyTimeCate[]
+}
+
+export interface InterviewDetail {
+  /**
+   * 0未收藏1收藏
+   */
+  collectFlag: number;
+  /**
+   * 面经的内容，为面经时才有自豪
+   */
+  content: null | string;
+  /**
+   * 创建时间
+   */
+  createdAt: string;
+  /**
+   * 创建者头像-面经
+   */
+  creatorAvatar: string;
+  /**
+   * 创建者名称-面经
+   */
+  creatorName: string;
+  /**
+   * 主键id-试题id
+   */
+  id: string;
+  /**
+   * 点赞数-面经
+   */
+  likeCount: number;
+  /**
+   * 是否点赞0未点赞1已点赞
+   */
+  likeFlag: number;
+  /**
+   * 关联问题：面经才有关联问题
+   */
+  relatedQuestions?: RelatedQuestion[];
+  /**
+   * 阶段待定-知识点
+   */
+  stage?: string[];
+  /**
+   * 题目的题干/面经的标题
+   */
+  stem: string;
+  /**
+   * 浏览量
+   */
+  views: number;
+}
+
+export interface RelatedQuestion {
+  /**
+   * 入库时间
+   */
+  createdAt?: string;
+  /**
+   * 题目id
+   */
+  id: string;
+  /**
+   * 题号/面经的标题
+   */
+  questionNo?: string;
+  /**
+   * 题干
+   */
+  stem: string;
 }
