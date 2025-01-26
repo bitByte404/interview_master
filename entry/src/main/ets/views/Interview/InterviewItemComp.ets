@@ -38,6 +38,7 @@ export  struct InterviewItemComp {
           Span(`浏览 ${this.item.views} | `)
           ImageSpan($r('app.media.icon_share'))
             .height(14)
+            .margin({left: 5})
         }
         .fontWeight(400)
         .fontSize(11.5)
